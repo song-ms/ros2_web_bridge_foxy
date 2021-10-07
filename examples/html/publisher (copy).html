@@ -46,7 +46,7 @@
   });
   var cmd_vel_listener = new ROSLIB.Topic({
     ros : ros,
-    name : "/cmd_vel",
+    name : "/demo/cmd_demo",
     messageType : 'geometry_msgs/Twist'
   });
 
@@ -54,21 +54,35 @@
 
   function saveName(){
   //input 요소에 입력한 문자열을 읽어온다.
-  const name_tag = document.getElementById("textInput").value;
-  document.getElementById("result1").innerText = name_tag;
+  const linear_x = 0.0;
+  const linear_y = 0.0;
+  const linear_z = 0.0;
+  const angular_x = 0.0;
+  const angular_y = 0.0;
+  const angular_z = 0.0;
+
+  const linear_x = document.getElementById("linear_x").value;
+  const linear_y = document.getElementById("linear_y").value;
+  const linear_z = document.getElementById("linear_z").value;
+
+  const angular_x = document.getElementById("angular_x").value;
+  const angular_y = document.getElementById("angular_y").value;
+  const angular_z = document.getElementById("angular_z").value;
+  
   //배열에 저장한다.
   var twist = new ROSLIB.Message({
       linear : {
-        x : name_tag,
-        y : 0.0,
-        z : 0.0
+        x : linear_x,
+        y : linear_y,
+        z : linear_z
       },
       angular : {
-        x : 0.0,
-        y : 0.0,
-        z : 0.0
+        x : angular_x,
+        y : angular_y,
+        z : angular_z
       }
   });
+  document.getElementById("result1").innerText = twist.linear.x;
   cmd_vel_listener.publish(twist);
   };
   function printName() {
@@ -83,14 +97,19 @@
     document.getElementById("publisher").innerText = message;
     document.getElementById("publisher1").innerText = name_tag;
   }, 1000);
-  
+  function time(){
+  var time= new Date(); 
+      document.getElementById("now").innerHTML=time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
+     setInterval("time()",1000); 
+  }
 </script>
 </head>
 
-<body>
-  <h1>cmd_vel Publisher Example by Minsoo Song</h1>
+<body onload='time()'>
+  <h1>cmd_vel Publisher Test Example</h1>
   <p>This example will pubilish a topic named "cmd_vel".</p>
-  <p>If you .</p>
+  <p>If you have any question, please feel free to contact me:)</p>
+  <p>Author: Minsoo Song, e-mail : sms0432@gmail.com</p>
   <div id="statusIndicator">
     <p id="connecting">
       Connecting to rosbridge...
@@ -107,21 +126,51 @@
   </div>
   <div>
     <p>
-      <b>Publish message: </b>
-      <span id="publisher"></span>
+      <b>Current time: </b>
+      <span id="now"></span>
     </p>
   </div>
   <div>
     <b>Publish message: </b>
   </div>
   <div>
-    <b>x: </b>
-    <input type="text" id="textInput" name="textInput" required
-      minlength="4" maxlength="8" size="10">
-    
+    <b> linear: </b>
   </div>
   <div>
-    <button onclick='saveName()'>보내기</button>
+    <b>x: </b>
+    <input type="text" id="linear_x" name="textInput" required
+      minlength="4" maxlength="8" size="10">    
+  </div>
+  <div>
+    <b>y: </b>
+    <input type="text" id="linear_y" name="textInput" required
+      minlength="4" maxlength="8" size="10">
+  </div>
+  <div>
+    <b>z: </b>
+    <input type="text" id="linear_z" name="textInput" required
+      minlength="4" maxlength="8" size="10">
+  </div>
+  <div>
+    <b> angular: </b>
+  </div>
+  <div>
+    <b>x: </b>
+    <input type="text" id="angular_x" name="textInput" required
+      minlength="4" maxlength="8" size="10">    
+  </div>
+  <div>
+    <b>y: </b>
+    <input type="text" id="angular_y" name="textInput" required
+      minlength="4" maxlength="8" size="10">
+  </div>
+  <div>
+    <b>z: </b>
+    <input type="text" id="angular_z" name="textInput" required
+      minlength="4" maxlength="8" size="10">
+  </div>
+  <div>
+    <button onclick='saveName()'>Publish!</button>
     <span id="result1"></span>
   </div>
 </body>

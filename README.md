@@ -1,22 +1,10 @@
-# ros2-web-bridge[![Build Status](https://travis-ci.org/RobotWebTools/ros2-web-bridge.svg?branch=develop)](https://travis-ci.org/RobotWebTools/ros2-web-bridge)[![Build status](https://ci.appveyor.com/api/projects/status/upb8xbq0f05mtgff/branch/develop?svg=true)](https://ci.appveyor.com/project/minggangw/ros2-web-bridge/branch/develop)[![npm](https://img.shields.io/npm/dt/ros2-web-bridge.svg)](https://www.npmjs.com/package/ros2-web-bridge)[![license](https://img.shields.io/github/license/RobotWebTools/ros2-web-bridge.svg)](https://github.com/RobotWebTools/ros2-web-bridge/blob/develop/LICENSE)[![dependencies Status](https://david-dm.org/RobotWebTools/ros2-web-bridge/status.svg)](https://david-dm.org/RobotWebTools/ros2-web-bridge)
+# ros2-web-bridge + cmd_vel_publisher in ROS2 foxy
 
-[![NPM](https://nodei.co/npm/ros2-web-bridge.png)](https://nodei.co/npm/ros2-web-bridge/)
+![ros2_web_bridge_test](https://user-images.githubusercontent.com/44196066/136336240-dcf57b23-d1a3-4a72-94a6-2985072e8ce6.png)
 
-## Server Implementations of the rosbridge v2 Protocol
+## Basically this package based on ros2_web_bridge pkg
+please check https://github.com/RobotWebTools/ros2-web-bridge for the fundamental installation
 
-ros2-web-bridge, which leverages the [rclnodejs](https://github.com/RobotWebTools/rclnodejs) client, provides a JSON interface to [ROS 2](https://index.ros.org/doc/ros2/) by adopting the [rosbridge v2 protocol](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md). The bridge can process commands through JSON tuneled over WebSockets.
-
-## ROS 2 support
-
-The ros2-web-bridge **SUPPORTS** the latest ROS 2 stable release by default (currently [Dashing Patch 2](https://github.com/ros2/ros2/releases/tag/release-dashing-20190806)), please visit the [relase channel](https://github.com/ros2/ros2/releases) to check out the information.
-
-Any one who wants to run on the nightly build of ROS 2, please change the `dependencies` section of [package.json](https://github.com/RobotWebTools/ros2-web-bridge/blob/develop/package.json) file to install other version of [rclnodejs](https://github.com/RobotWebTools/rclnodejs#match-with-ros-20-stable-releases).
-
-## Supported Clients
-
-A client is a program that communicates with ros2-web-bridge using its JSON API. Clients include:
-
-* [roslibjs](https://github.com/RobotWebTools/roslibjs) - A JavaScript API, which communicates with ros2-web-bridge over WebSockets.
 
 ## Install
 
@@ -55,29 +43,18 @@ A client is a program that communicates with ros2-web-bridge using its JSON API.
     ```
 4. Open your browser, and navigate to URL: http://localhost:3000/html/publisher.html
 
-## Not supported `op`
+## Example of publishing Cmd_vel and check local PC
+1. Open your browser, and navigate to URL :
+    (default) ws/example/html/cmd_vel_pub.html
 
-Some experimental operations defined by rosbridge v2.0 protocol specification are not supported by ros2-web-bridge now, please check out the list:
+2. Set Connection as same as your ws://<address>:<port>
+  and check the button "connect!"
+    (default)_http://localhost:9090 (it can be changable as your flavor)
 
-* [fragment](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#311-fragmentation--fragment--experimental)
-* [png](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#312-png-compression--png--experimental)
-* [status](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#322-status-message--status--experimental)
+3. If you can see the connected sign, you are fully ready for sending the topic
 
-and the authentication
-
-* [auth](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#331-authenticate--auth-)
-
-## Compability with rosbridge v2.0 protocol
-
-We are trying to obey the [rosbridge v2 protocol](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md), but there are still some operation commands which can not follow the spec. The table below lists the differences:
-
-opreations | rosbridge v2.0 protocol spec | ros2-web-bridge implementation |
-:------------: |  :------------ |  :------------- |
-publish | If the msg is a subset of the type of the topic, then a warning status message is sent and the unspecified fields are filled in with [defaults](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#343-publish--publish-). | If the subset of the msg is unspecified, then an error status message is sent and this message is dropped.
-subscribe | The type of the topic is [optional](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#344-subscribe). | The type of the topic must be offered.
-
-If you use [roslibjs](https://static.robotwebtools.org/roslibjs/current/roslib.js) as the client running in the browser, please reference the code snippet below:
-
+(I took a test using turtlebot_node as the picture)
+![ros2_web_bridge_w_gazebo](https://user-images.githubusercontent.com/44196066/136336121-dc4b0d68-2507-4441-aafc-4525356ca684.png)
 * Subscribe to a topic.
   ```JavaScript
   // Define a topic with its type.
